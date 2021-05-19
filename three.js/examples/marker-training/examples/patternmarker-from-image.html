@@ -38,9 +38,7 @@ const mouse = new THREE.Vector2();
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
 	// renderer.setPixelRatio( 2 );
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '0px'
-	renderer.domElement.style.left = '0px'
+
 	document.body.appendChild( renderer.domElement );
 
 	// array of functions for the rendering loop
@@ -89,6 +87,7 @@ const mouse = new THREE.Vector2();
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
+		renderer.setSize(window.innerWidth, window.innerHeight);
 		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
 
@@ -159,11 +158,11 @@ const mouse = new THREE.Vector2();
 	//////////////////////////////////////////////////////////////////////////////////
 
 
-	// var mesh = new THREE.AxesHelper()
-	// // markerRoot.add(mesh)
-	// smoothedRoot.add(mesh)
+	var mesh = new THREE.AxesHelper()
+	// markerRoot.add(mesh)
+	smoothedRoot.add(mesh)
 
-	// // add a torus knot
+	// add a torus knot
 	// var geometry	= new THREE.CubeGeometry(1,1,1);
 	// var material	= new THREE.MeshNormalMaterial({
 	// 	transparent : true,
@@ -176,7 +175,7 @@ const mouse = new THREE.Vector2();
 	// smoothedRoot.add(mesh)
 
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-	var material	= new THREE.MeshNormalMaterial({transparent : true,});
+	var material	= new THREE.MeshNormalMaterial({transparent : true,opacity:1});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
@@ -187,30 +186,6 @@ const mouse = new THREE.Vector2();
 	})
 	
 	
-	function onDocumentTouchStart( event ) {
-		
-			// calculate mouse position in normalized device coordinates
-			// (-1 to +1) for both components
-		
-			mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
-			mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
-			raycaster.setFromCamera( mouse, camera );
-			const intersects = raycaster.intersectObjects( smoothedRoot.children );
-	
-	if(intersects.length>0){
-		smoothedRoot.traverse(child=>{
-			if(child.isMesh && child.name === 'mesh'){
-				if(child.material.opacity === 1) child.material.opacity = 0.2;
-				else child.material.opacity = 1;
-				}
-		})
-	}
-	    
-	
-		
-		}
-	
-	window.addEventListener( 'touchstart', onDocumentTouchStart, false );
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
@@ -237,4 +212,32 @@ const mouse = new THREE.Vector2();
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
+	
+	
+	
+	function onDocumentTouchStart( event ) {
+		
+			// calculate mouse position in normalized device coordinates
+			// (-1 to +1) for both components
+		
+			mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
+			raycaster.setFromCamera( mouse, camera );
+			const intersects = raycaster.intersectObjects( smoothedRoot.children );
+	
+	console.log(smoothedRoot.children,intersects)
+	if(intersects.length>0){
+		smoothedRoot.traverse(child=>{
+			if(child.isMesh){
+				if(child.material.opacity === 1) child.material.opacity = 0.2;
+				else child.material.opacity = 1;
+				}
+		})
+	}
+	    
+	
+		
+		}
+	
+	window.addEventListener( 'touchstart', onDocumentTouchStart, false );
 </script></body>
