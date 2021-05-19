@@ -63,7 +63,7 @@ const mouse = new THREE.Vector2();
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	var camera = new THREE.Camera();
+	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -168,8 +168,8 @@ const mouse = new THREE.Vector2();
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
-		opacity: 0.3,
-		side: THREE.DoubleSide
+		opacity: 0.2,
+		side: THREE.DoubleSide,
 	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.name = 'box'
@@ -178,7 +178,10 @@ const mouse = new THREE.Vector2();
 	smoothedRoot.add(mesh)
 
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.3,64,16);
-	var material	= new THREE.MeshNormalMaterial();
+	var material	= new THREE.MeshNormalMaterial({
+		transparent : true,
+		opacity: 1.0,
+	});
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.name = 'mesh'
 	// mesh.position.y	= 0.5
@@ -196,6 +199,7 @@ const mouse = new THREE.Vector2();
 	document.body.appendChild( stats.dom );
 	// render the scene
 	onRenderFcts.push(function(){
+		
 		renderer.render( scene, camera );
 		stats.update();
 	})
@@ -203,6 +207,8 @@ const mouse = new THREE.Vector2();
 	// run the rendering loop
 	var lastTimeMsec= null
 	requestAnimationFrame(function animate(nowMsec){
+		
+	
 		// keep looping
 		requestAnimationFrame( animate );
 		// measure time
@@ -233,15 +239,18 @@ const mouse = new THREE.Vector2();
 	
 		mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
 		mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
-		
-		 var vector = new THREE.Vector3(mouse.x, mouse.y,0.5).unproject(camera);
+		raycaster.setFromCamera( mouse, camera );
+		const intersects = raycaster.intersectObjects( smoothedRoot.children );
 
-    //在视点坐标系中形成射线,射线的起点向量是照相机， 射线的方向向量是照相机到点击的点，这个向量应该归一标准化。
-    var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-
-    //射线和模型求交，选中一系列直线
-    var intersects = raycaster.intersectObjects(smoothedRoot.children);
-    console.log('intersects',intersects)
+if(intersects.length>0){
+	smoothedRoot.traverse(child=>{
+		if(child.isMesh && child.name === 'mesh'){
+			if(child.material.opacity === 1) child.material.opacity = 0.2;
+			else child.material.opacity = 1;
+			}
+	})
+}
+    
 
 	
 	}
