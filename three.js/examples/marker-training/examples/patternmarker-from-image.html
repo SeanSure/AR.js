@@ -63,8 +63,8 @@ const mouse = new THREE.Vector2();
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	// const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-	const camera = new THREE.Camera();
+	const camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100 );
+	// const camera = new THREE.Camera();
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -84,11 +84,18 @@ const mouse = new THREE.Vector2();
 		// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/videos/headtracking.mp4',
 	})
 
+setTimeout(()=>{
 	arToolkitSource.init(function onReady(){
 		// handle resize of renderer
 		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
-
+	
+},100)
+	arToolkitSource.init(function onReady(){
+		// handle resize of renderer
+		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
+	})
+	
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
