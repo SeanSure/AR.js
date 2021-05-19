@@ -103,8 +103,8 @@ const mouse = new THREE.Vector2();
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		canvasWidth: window.innerWidth,
-		canvasHeight: window.innerHeight,
+		canvasWidth: 80*3,
+		canvasHeight: 60*3,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
