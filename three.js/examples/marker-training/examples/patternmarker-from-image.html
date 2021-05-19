@@ -27,6 +27,10 @@
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
 
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
 		// antialias	: true,
@@ -156,26 +160,25 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 
-	var mesh = new THREE.AxesHelper()
-	// markerRoot.add(mesh)
-	smoothedRoot.add(mesh)
-
+	// var mesh = new THREE.AxesHelper()
+	// // markerRoot.add(mesh)
+	// smoothedRoot.add(mesh)
 	// add a torus knot
 	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
-		opacity: 0.5,
+		opacity: 0.3,
 		side: THREE.DoubleSide
 	});
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= geometry.parameters.height/2
+	// mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
 	smoothedRoot.add(mesh)
 
-	var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
+	var geometry	= new THREE.TorusKnotGeometry(0.3,0.3,64,16);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.position.y	= 0.5
+	// mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
 	smoothedRoot.add( mesh );
 
@@ -207,5 +210,29 @@
 		onRenderFcts.forEach(function(onRenderFct){
 			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
+		
+		
+		const intersects = raycaster.intersectObjects( smoothedRoot );
+		
+		// console.log(11111,intersects)
+		if(intersects.length>0) intersects[ 0 ].object.material.color.set( 0xff0000 );
+		// 	for ( let i = 0; i < intersects.length; i ++ ) {
+		
+		// 		intersects[ i ].object.material.color.set( 0xff0000 );
+		
+		// 	}
 	})
+	
+	
+	function onMouseMove( event ) {
+	
+		// calculate mouse position in normalized device coordinates
+		// (-1 to +1) for both components
+	
+		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+	
+	}
+
+	
 </script></body>
