@@ -27,6 +27,9 @@
 	//		Init
 	//////////////////////////////////////////////////////////////////////////////////
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
 		// antialias	: true,
@@ -58,7 +61,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// Create a camera
-	var camera = new THREE.Camera();
+	var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 100 );
 	scene.add(camera);
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -182,6 +185,32 @@
 	onRenderFcts.push(function(delta){
 		mesh.rotation.x += delta * Math.PI
 	})
+	
+	
+	function onDocumentTouchStart( event ) {
+		
+			// calculate mouse position in normalized device coordinates
+			// (-1 to +1) for both components
+		
+			mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
+			mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
+			raycaster.setFromCamera( mouse, camera );
+			const intersects = raycaster.intersectObjects( smoothedRoot.children );
+	
+	if(intersects.length>0){
+		smoothedRoot.traverse(child=>{
+			if(child.isMesh && child.name === 'mesh'){
+				if(child.material.opacity === 1) child.material.opacity = 0.2;
+				else child.material.opacity = 1;
+				}
+		})
+	}
+	    
+	
+		
+		}
+	
+	window.addEventListener( 'touchstart', onDocumentTouchStart, false );
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the whole thing on the page
