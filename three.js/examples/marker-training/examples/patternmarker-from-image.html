@@ -165,13 +165,14 @@ const mouse = new THREE.Vector2();
 	// // markerRoot.add(mesh)
 	// smoothedRoot.add(mesh)
 	// add a torus knot
-	var geometry	= new THREE.CubeGeometry(2,2,2);
+	var geometry	= new THREE.CubeGeometry(1,1,1);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.3,
 		side: THREE.DoubleSide
 	});
 	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.name = 'box'
 	// mesh.position.y	= geometry.parameters.height/2
 	// markerRoot.add( mesh );
 	smoothedRoot.add(mesh)
@@ -179,6 +180,7 @@ const mouse = new THREE.Vector2();
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.3,64,16);
 	var material	= new THREE.MeshNormalMaterial();
 	var mesh	= new THREE.Mesh( geometry, material );
+	mesh.name = 'mesh'
 	// mesh.position.y	= 0.5
 	// markerRoot.add( mesh );
 	smoothedRoot.add( mesh );
@@ -213,10 +215,9 @@ const mouse = new THREE.Vector2();
 		})
 		
 		
-		const intersects = raycaster.intersectObjects( smoothedRoot.children );
+	
 		
-		// console.log(11111,intersects)
-		if(intersects.length>0) intersects[ 0 ].object.material.color.set( 0xff0000 );
+		// if(intersects.length>0) intersects[ 0 ].object.material.color.set( 0xff0000 );
 		// 	for ( let i = 0; i < intersects.length; i ++ ) {
 		
 		// 		intersects[ i ].object.material.color.set( 0xff0000 );
@@ -232,6 +233,16 @@ const mouse = new THREE.Vector2();
 	
 		mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
 		mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
+		
+		 var vector = new THREE.Vector3(mouse.x, mouse.y,0.5).unproject(camera);
+
+    //在视点坐标系中形成射线,射线的起点向量是照相机， 射线的方向向量是照相机到点击的点，这个向量应该归一标准化。
+    var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+    //射线和模型求交，选中一系列直线
+    var intersects = raycaster.intersectObjects(smoothedRoot.children);
+    console.log('intersects',intersects)
+
 	
 	}
 
