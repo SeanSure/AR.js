@@ -213,7 +213,7 @@ const mouse = new THREE.Vector2();
 		})
 		
 		
-		const intersects = raycaster.intersectObjects( smoothedRoot );
+		const intersects = raycaster.intersectObjects( smoothedRoot.children );
 		
 		// console.log(11111,intersects)
 		if(intersects.length>0) intersects[ 0 ].object.material.color.set( 0xff0000 );
@@ -225,15 +225,16 @@ const mouse = new THREE.Vector2();
 	})
 	
 	
-	function onMouseMove( event ) {
+	function onDocumentTouchStart( event ) {
 	
 		// calculate mouse position in normalized device coordinates
 		// (-1 to +1) for both components
 	
-		mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-		mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+		mouse.x = ( event.targetTouches[0].pageX / window.innerWidth ) * 2 - 1;
+		mouse.y = - ( event.targetTouches[0].pageY / window.innerHeight ) * 2 + 1;
 	
 	}
 
+window.addEventListener( 'touchstart', onDocumentTouchStart, false );
 	
 </script></body>
