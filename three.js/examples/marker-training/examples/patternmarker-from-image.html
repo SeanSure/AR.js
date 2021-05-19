@@ -30,7 +30,6 @@
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-	
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
@@ -92,6 +91,7 @@ const mouse = new THREE.Vector2();
 	// handle resize
 	window.addEventListener('resize', function(){
 		// handle arToolkitSource resize
+		renderer.setSize(window.innerWidth, window.innerHeight);
 		arToolkitSource.onResize([renderer.domElement, arToolkitContext.arController.canvas])
 	})
 
@@ -103,8 +103,8 @@ const mouse = new THREE.Vector2();
 	var arToolkitContext = new THREEx.ArToolkitContext({
 		cameraParametersUrl: THREEx.ArToolkitContext.baseURL + '../data/data/camera_para.dat',
 		detectionMode: 'mono',
-		canvasWidth: 80*3,
-		canvasHeight: 60*3,
+		canvasWidth: renderer.domElement.width,
+		canvasHeight: renderer.domElement.height,
 	})
 	// initialize it
 	arToolkitContext.init(function onCompleted(){
