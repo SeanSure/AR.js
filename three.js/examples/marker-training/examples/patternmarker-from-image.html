@@ -165,17 +165,17 @@ const mouse = new THREE.Vector2();
 	// // markerRoot.add(mesh)
 	// smoothedRoot.add(mesh)
 	// add a torus knot
-	var geometry	= new THREE.CubeGeometry(2,2,2);
-	var material	= new THREE.MeshNormalMaterial({
-		transparent : true,
-		opacity: 0.2,
-		side: THREE.DoubleSide,
-	});
-	var mesh	= new THREE.Mesh( geometry, material );
-	mesh.name = 'box'
-	// mesh.position.y	= geometry.parameters.height/2
-	// markerRoot.add( mesh );
-	smoothedRoot.add(mesh)
+	// var geometry	= new THREE.CubeGeometry(2,2,2);
+	// var material	= new THREE.MeshNormalMaterial({
+	// 	transparent : true,
+	// 	opacity: 0.2,
+	// 	side: THREE.DoubleSide,
+	// });
+	// var mesh	= new THREE.Mesh( geometry, material );
+	// mesh.name = 'box'
+	// // mesh.position.y	= geometry.parameters.height/2
+	// // markerRoot.add( mesh );
+	// smoothedRoot.add(mesh)
 
 	var geometry	= new THREE.TorusKnotGeometry(0.3,0.3,64,16);
 	var material	= new THREE.MeshNormalMaterial({
