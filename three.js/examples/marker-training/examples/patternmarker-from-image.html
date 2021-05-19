@@ -33,7 +33,7 @@ const mouse = new THREE.Vector2();
 
 	// init renderer
 	var renderer	= new THREE.WebGLRenderer({
-		// antialias	: true,
+		antialias: true,
 		alpha: true
 	});
 	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
@@ -42,6 +42,7 @@ const mouse = new THREE.Vector2();
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
+	renderer.setPixelRatio(window.devicePixelRatio);
 	document.body.appendChild( renderer.domElement );
 
 	// array of functions for the rendering loop
@@ -164,7 +165,7 @@ const mouse = new THREE.Vector2();
 	// // markerRoot.add(mesh)
 	// smoothedRoot.add(mesh)
 	// add a torus knot
-	var geometry	= new THREE.CubeGeometry(1,1,1);
+	var geometry	= new THREE.CubeGeometry(2,2,2);
 	var material	= new THREE.MeshNormalMaterial({
 		transparent : true,
 		opacity: 0.3,
